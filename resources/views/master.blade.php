@@ -82,14 +82,26 @@
                 <h3>General</h3>
                 <ul class="nav side-menu">
 
-                    
+                  <li><a href="{{ url('home') }}"><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a></li>
 
-                  <li><a><i class="fa fa-home"></i> Laporan <span class="fa fa-chevron-down"></span></a>
+                  <li><a href="{{ url('admin') }}"><i class="fa fa-users"></i> Administrator <span class="fa fa-chevron-down"></span></a></li>
+
+                  <li><a><i class="fa fa-send"></i> Laporan <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="{{route('laporan.index')}}">Data Laporan</a></li> 
+                      <li><a href="{{route('laporan.subdit')}}">Data Laporan Subdit</a></li> 
                     </ul>
                   </li>
                 
+
+                  <li><a><i class="fa fa-bar-chart"></i> Data Laporan <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{route('chart.unit')}}">Data Laporan Subdit</a></li> 
+                      <li><a href="{{route('chart.subdit')}}">Data Laporan Bibnopsal</a></li> 
+                    </ul>
+                  </li>
+
+
                 </ul>
               </div>
 
