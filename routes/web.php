@@ -35,14 +35,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('laporan', 'LaporanController');
     Route::get('laporan/destroy/{id}', 'LaporanController@destroy');    
 
+    
+    Route::group(['prefix'=>'charts','as'=>'chart.'], function(){  
+        Route::get('index', ['as' => 'index', 'uses' => 'ChartController@index'] );  
+        Route::get('unit', ['as' => 'unit', 'uses' => 'ChartController@getDataByUnit'] );   
+    });
+
 });
 
 
 
-Route::group(['prefix'=>'charts','as'=>'chart.'], function(){  
-    Route::get('index', ['as' => 'index', 'uses' => 'ChartController@index'] );  
-    Route::get('unit', ['as' => 'unit', 'uses' => 'ChartController@getDataByUnit'] );   
-});
 
 // Route::get('/home', 'HomeController@index')->name('home'); 
 

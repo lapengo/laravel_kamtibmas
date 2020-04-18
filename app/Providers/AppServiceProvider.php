@@ -30,7 +30,9 @@ class AppServiceProvider extends ServiceProvider
 
         Schema::defaultStringLength(191);
         setlocale(LC_TIME, 'Indonesia');
-        \Carbon\Carbon::setLocale(config('app.locale'));
+        // \Carbon\Carbon::setLocale(config('app.locale'));
 
+        config(['app.locale' => 'id']);
+        \Carbon\Carbon::setLocale('id');
     }
 }

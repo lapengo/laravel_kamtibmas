@@ -12,54 +12,71 @@ use Auth;
 use DB;
 
 class ChartController extends Controller
-{
-    public function index()
-    {        
-        $data = DB::table('laporans')
-                ->select(
-                    DB::raw("SUM(laporan_polisi) as laporan_polisi"), 
-                    DB::raw("SUM(perkara_sidik) as perkara_sidik"), 
-                    DB::raw("SUM(perkara_lidik) as perkara_lidik"), 
-                    DB::raw("SUM(perkara_selra) as perkara_selra"), 
-                    DB::raw("SUM(perkara_sp3) as perkara_sp3"), 
-                    DB::raw("SUM(perkara_henti_lidik) as perkara_henti_lidik"),
-                    DB::raw("SUM(perkara_p21) as perkara_p21"), 
-                    DB::raw("SUM(upp_pemanggilan) as upp_pemanggilan"), 
-                    DB::raw("SUM(upp_penangkapan) as upp_penangkapan"), 
-                    DB::raw("SUM(upp_penahanan) as upp_penahanan"), 
-                    DB::raw("SUM(upp_penggeledahan) as upp_penggeledahan"), 
-                    DB::raw("SUM(upp_penyitaan) as upp_penyitaan"), 
-                    DB::raw("SUM(jlh_tahanan) as jlh_tahanan"), 
-                    'tanggal_situasi'
-                )
-                ->groupBy('tanggal_situasi') 
-                ->get();
-        
-        return response()->json(['status' => 200, 'data' => $data]);
-    }
+{ 
+    public function getDataByUnit(Request $request)
+    {  
+        $now = Carbon::now()->format('Y-m-d');
 
-    // public function getAllDateLaporan($user)
-    // {
-    //     $quser = ''; 
-    //     if($user != 0)
-    //     {
-    //         $quser = 'WHERE from_userid = "'. $user .'"';
-    //     }
+        $status     = false;
+        $unit       = $request->get('unit');
+        $date       = $request->get('tanggal_situasi'); 
 
-    //     $data = DB::select('SELECT tanggal_situasi FROM laporans '. $quser .' GROUP BY tanggal_situasi ORDER BY tanggal_situasi DESC LIMIT 14');
+        if($unit == 0){
+            $unit   = Auth::user()->id;
+            $status = true;
+        }
 
-    //     return $data;
-    // } 
+        if($date == '')
+        {
+            $date = $now;
+        }  
+
+        $models = new Laporan;
+        $arrayJml = $models->getJmlDataSubditUnit($unit, $date, $status); 
+ 
+
+        $laporan_polisi         = 0;
+        $perkara_sidik          = 0; 
+        $perkara_lidik          = 0;
+        $perkara_selra          = 0; 
+        $perkara_sp3            = 0; 
+        $perkara_henti_lidik    = 0;
+        $perkara_p21            = 0; 
+        $upp_pemanggilan        = 0; 
+        $upp_penangkapan        = 0;
+        $upp_penahanan          = 0; 
+        $upp_penggeledahan      = 0; 
+        $upp_penyitaan          = 0; 
+        $jlh_tahanan            = 0;
+
+        foreach($arrayJml as $r){
+            $laporan_polisi         = $r->laporan_polisi; 
+            $perkara_sidik          = $r->perkara_sidik; 
+            $perkara_lidik          = $r->perkara_lidik;
+            $perkara_selra          = $r->perkara_selra; 
+            $perkara_sp3            = $r->perkara_sp3; 
+            $perkara_henti_lidik    = $r->perkara_henti_lidik;
+            $perkara_p21            = $r->perkara_p21; 
+            $upp_pemanggilan        = $r->upp_pemanggilan; 
+            $upp_penangkapan        = $r->upp_penangkapan;
+            $upp_penahanan          = $r->upp_penahanan; 
+            $upp_penggeledahan      = $r->upp_penggeledahan; 
+            $upp_penyitaan          = $r->upp_penyitaan; 
+            $jlh_tahanan            = $r->jlh_tahanan;
+        }
+
+        $jmlData =  $laporan_polisi . "," . $perkara_sidik  . "," . $perkara_lidik  . "," . 
+                    $perkara_selra . "," . $perkara_sp3  . "," . $perkara_henti_lidik  . "," . 
+                    $perkara_p21 . "," . $upp_pemanggilan  . "," . $upp_penangkapan  . "," . 
+                    $upp_penahanan . "," . $upp_penggeledahan  . "," . $upp_penyitaan  . "," . $jlh_tahanan ;
 
 
-    public function getDataByUnit()
-    { 
-        $userSubdit = Users::getUnitSubdit(Auth::user()->id)->get(); 
-
+        $userSubdit = Users::getUnitSubdit(Auth::user()->id)->get(); //Untuk Combobox
         $allData = [
-                        'unit' => $userSubdit,
-                    ];
-
+                        'unit'      => $userSubdit,
+                        'dataku'    => $jmlData,
+                        'date'      => $date,
+                    ]; 
         
         return view('chart.subditchart', $allData); 
         

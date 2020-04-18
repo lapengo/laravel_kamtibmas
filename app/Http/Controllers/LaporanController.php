@@ -19,8 +19,11 @@ class LaporanController extends Controller
     public function __construct()
     {
         // $this->middleware('auth');
-        $this->middleware(function($request, $next){            
-            if(Gate::allows('isUnit')) return $next($request);
+        $this->middleware(function($request, $next){  
+                       
+            if(Gate::allows('isUnit')){
+                return $next($request);
+            }  
             abort(403, 'Anda tidak memiliki cukup hak akses');
         });
     }

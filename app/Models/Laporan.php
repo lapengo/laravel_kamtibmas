@@ -4,6 +4,7 @@ namespace KANTIBMAS\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator; 
+use DB;
 
 class Laporan extends Model
 {
@@ -86,5 +87,59 @@ class Laporan extends Model
         
         return $validator;
     }
+
+
+    /**
+     * Get Data Chart Grafik
+     */
+ 
+
+
+     public function getJmlDataSubditUnit($unit, $date, $bool)
+     {
+        $where = [];
+        if(!$bool)
+        {
+            $where = [
+                        ['tanggal_situasi','=',$date],
+                        ['from_userid','=', $unit]
+                    ]; 
+        }
+        else
+        {
+            $where = [
+                        ['tanggal_situasi','=',$date],
+                        ['to_userid','=', $unit]
+                    ];  
+        }
+
+        $data = DB::table('laporans')
+                ->select(
+                    DB::raw("SUM(laporan_polisi) as laporan_polisi"), 
+                    DB::raw("SUM(perkara_sidik) as perkara_sidik"), 
+                    DB::raw("SUM(perkara_lidik) as perkara_lidik"), 
+                    DB::raw("SUM(perkara_selra) as perkara_selra"), 
+                    DB::raw("SUM(perkara_sp3) as perkara_sp3"), 
+                    DB::raw("SUM(perkara_henti_lidik) as perkara_henti_lidik"),
+                    DB::raw("SUM(perkara_p21) as perkara_p21"), 
+                    DB::raw("SUM(upp_pemanggilan) as upp_pemanggilan"), 
+                    DB::raw("SUM(upp_penangkapan) as upp_penangkapan"), 
+                    DB::raw("SUM(upp_penahanan) as upp_penahanan"), 
+                    DB::raw("SUM(upp_penggeledahan) as upp_penggeledahan"), 
+                    DB::raw("SUM(upp_penyitaan) as upp_penyitaan"), 
+                    DB::raw("SUM(jlh_tahanan) as jlh_tahanan"), 
+                    'tanggal_situasi'
+                )
+                ->where($where)
+                ->groupBy('tanggal_situasi') 
+                ->get();
+
+        return $data;
+     }
+
+
+     /**
+      * END DATA CHART GRAFIK
+      */
 
 }
