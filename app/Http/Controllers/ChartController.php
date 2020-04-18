@@ -17,13 +17,20 @@ class ChartController extends Controller
     {  
         $now = Carbon::now()->format('Y-m-d');
 
-        $status     = false;
+        $status     = 2;
         $unit       = $request->get('unit');
-        $date       = $request->get('tanggal_situasi'); 
+        $date       = $request->get('tanggal_situasi');
+        
+        
+        $pilihUnit = "";         
 
         if($unit == 0){
             $unit   = Auth::user()->id;
-            $status = true;
+            $status = 1;
+            $pilihUnit = "Semua Unit";
+        }else{
+            $qryUser    = Users::findOrFail($unit);  
+            $pilihUnit  = $qryUser->pic_name; 
         }
 
         if($date == '')
@@ -32,43 +39,9 @@ class ChartController extends Controller
         }  
 
         $models = new Laporan;
-        $arrayJml = $models->getJmlDataSubditUnit($unit, $date, $status); 
- 
+        $description    = $models->getDescLoporan($unit, $date, $status); 
+        $jmlData        = $models->getJmlDataSubditUnit($unit, $date, $status);
 
-        $laporan_polisi         = 0;
-        $perkara_sidik          = 0; 
-        $perkara_lidik          = 0;
-        $perkara_selra          = 0; 
-        $perkara_sp3            = 0; 
-        $perkara_henti_lidik    = 0;
-        $perkara_p21            = 0; 
-        $upp_pemanggilan        = 0; 
-        $upp_penangkapan        = 0;
-        $upp_penahanan          = 0; 
-        $upp_penggeledahan      = 0; 
-        $upp_penyitaan          = 0; 
-        $jlh_tahanan            = 0;
-
-        foreach($arrayJml as $r){
-            $laporan_polisi         = $r->laporan_polisi; 
-            $perkara_sidik          = $r->perkara_sidik; 
-            $perkara_lidik          = $r->perkara_lidik;
-            $perkara_selra          = $r->perkara_selra; 
-            $perkara_sp3            = $r->perkara_sp3; 
-            $perkara_henti_lidik    = $r->perkara_henti_lidik;
-            $perkara_p21            = $r->perkara_p21; 
-            $upp_pemanggilan        = $r->upp_pemanggilan; 
-            $upp_penangkapan        = $r->upp_penangkapan;
-            $upp_penahanan          = $r->upp_penahanan; 
-            $upp_penggeledahan      = $r->upp_penggeledahan; 
-            $upp_penyitaan          = $r->upp_penyitaan; 
-            $jlh_tahanan            = $r->jlh_tahanan;
-        }
-
-        $jmlData =  $laporan_polisi . "," . $perkara_sidik  . "," . $perkara_lidik  . "," . 
-                    $perkara_selra . "," . $perkara_sp3  . "," . $perkara_henti_lidik  . "," . 
-                    $perkara_p21 . "," . $upp_pemanggilan  . "," . $upp_penangkapan  . "," . 
-                    $upp_penahanan . "," . $upp_penggeledahan  . "," . $upp_penyitaan  . "," . $jlh_tahanan ;
 
 
         $userSubdit = Users::getUnitSubdit(Auth::user()->id)->get(); //Untuk Combobox
@@ -76,6 +49,52 @@ class ChartController extends Controller
                         'unit'      => $userSubdit,
                         'dataku'    => $jmlData,
                         'date'      => $date,
+                        'unitPilih' => $pilihUnit,
+                        'desc'      => $description,
+                    ]; 
+        
+        return view('chart.subditchart', $allData); 
+        
+    }
+
+    public function getDataBySubdit(Request $request)
+    {  
+        $now = Carbon::now()->format('Y-m-d');
+
+        $status     = 1;
+        $unit       = $request->get('unit');
+        $date       = $request->get('tanggal_situasi');
+        
+        
+        $pilihUnit = "";         
+
+        if($unit == 0){
+            $unit   = Auth::user()->id;
+            $status = 3;
+            $pilihUnit = "Semua Subdit";
+        }else{
+            $qryUser    = Users::findOrFail($unit);  
+            $pilihUnit  = $qryUser->pic_name; 
+        }
+
+        if($date == '')
+        {
+            $date = $now;
+        }  
+
+        $models = new Laporan;
+        $description    = $models->getDescLoporan($unit, $date, $status); 
+        $jmlData        = $models->getJmlDataSubditUnit($unit, $date, $status);
+
+
+
+        $userSubdit = Users::getUnitSubdit(Auth::user()->id)->get(); //Untuk Combobox
+        $allData = [
+                        'unit'      => $userSubdit,
+                        'dataku'    => $jmlData,
+                        'date'      => $date,
+                        'unitPilih' => $pilihUnit,
+                        'desc'      => $description,
                     ]; 
         
         return view('chart.subditchart', $allData); 

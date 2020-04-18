@@ -10,6 +10,7 @@ class Laporan extends Model
 {
     
     protected $table        = 'laporans';
+    protected $table2       = 'users';
     public $timestamps      = true;
     protected $primaryKey   = 'id';
     protected $fillable     = [ 
@@ -93,27 +94,38 @@ class Laporan extends Model
      * Get Data Chart Grafik
      */
  
-
-
-     public function getJmlDataSubditUnit($unit, $date, $bool)
+     public function getWhere($unit, $date, $status)
      {
         $where = [];
-        if(!$bool)
-        {
-            $where = [
-                        ['tanggal_situasi','=',$date],
-                        ['from_userid','=', $unit]
-                    ]; 
-        }
-        else
+        if($status == 1) // For Subdit
         {
             $where = [
                         ['tanggal_situasi','=',$date],
                         ['to_userid','=', $unit]
-                    ];  
+                    ];
+        }
+        else if($status == 2) // For Unit Subdit
+        {  
+            $where = [
+                        ['tanggal_situasi','=',$date],
+                        ['from_userid','=', $unit]
+                    ]; 
+        }        
+        else// For Bibnopsal - AllSubdit
+        {  
+            $where = [
+                        ['tanggal_situasi','=',$date], 
+                    ]; 
         }
 
-        $data = DB::table('laporans')
+        return $where;
+     }
+
+     public function getQueryCount($unit, $date, $status)
+     {
+        $where = $this->getWhere($unit, $date, $status);
+
+        $data = DB::table($this->table)
                 ->select(
                     DB::raw("SUM(laporan_polisi) as laporan_polisi"), 
                     DB::raw("SUM(perkara_sidik) as perkara_sidik"), 
@@ -132,6 +144,62 @@ class Laporan extends Model
                 )
                 ->where($where)
                 ->groupBy('tanggal_situasi') 
+                ->get();
+
+        return $data;
+     }
+
+
+     public function getJmlDataSubditUnit($unit, $date, $status)
+     {
+        $arrayJml = $this->getQueryCount($unit, $date, $status);
+
+        $laporan_polisi         = 0;
+        $perkara_sidik          = 0; 
+        $perkara_lidik          = 0;
+        $perkara_selra          = 0; 
+        $perkara_sp3            = 0; 
+        $perkara_henti_lidik    = 0;
+        $perkara_p21            = 0; 
+        $upp_pemanggilan        = 0; 
+        $upp_penangkapan        = 0;
+        $upp_penahanan          = 0; 
+        $upp_penggeledahan      = 0; 
+        $upp_penyitaan          = 0; 
+        $jlh_tahanan            = 0;
+
+        foreach($arrayJml as $r){
+            $laporan_polisi         = $r->laporan_polisi; 
+            $perkara_sidik          = $r->perkara_sidik; 
+            $perkara_lidik          = $r->perkara_lidik;
+            $perkara_selra          = $r->perkara_selra; 
+            $perkara_sp3            = $r->perkara_sp3; 
+            $perkara_henti_lidik    = $r->perkara_henti_lidik;
+            $perkara_p21            = $r->perkara_p21; 
+            $upp_pemanggilan        = $r->upp_pemanggilan; 
+            $upp_penangkapan        = $r->upp_penangkapan;
+            $upp_penahanan          = $r->upp_penahanan; 
+            $upp_penggeledahan      = $r->upp_penggeledahan; 
+            $upp_penyitaan          = $r->upp_penyitaan; 
+            $jlh_tahanan            = $r->jlh_tahanan;
+        }
+
+        $jmlData =  $laporan_polisi . "," . $perkara_sidik  . "," . $perkara_lidik  . "," . 
+                    $perkara_selra . "," . $perkara_sp3  . "," . $perkara_henti_lidik  . "," . 
+                    $perkara_p21 . "," . $upp_pemanggilan  . "," . $upp_penangkapan  . "," . 
+                    $upp_penahanan . "," . $upp_penggeledahan  . "," . $upp_penyitaan  . "," . $jlh_tahanan ;
+
+        return $jmlData;
+     }
+
+     public function getDescLoporan($unit, $date, $status)
+     {
+        $where = $this->getWhere($unit, $date, $status);
+
+        $data = DB::table($this->table)
+                ->join($this->table2, 'laporans.from_userid', '=', 'users.id')
+                ->select('laporans.situasi_umum', 'laporans.kejahatan_menonjol_desc', 'users.pic_name')
+                ->where($where)
                 ->get();
 
         return $data;
