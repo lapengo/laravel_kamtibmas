@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
     // });
     
     
-    Route::resource('admin', 'AdminsController');
+    Route::resource('admin', 'AdmisController');
      
     Route::resource('laporan', 'LaporanController');
     Route::get('laporan/destroy/{id}', 'LaporanController@destroy');    

@@ -3,6 +3,12 @@
 namespace KANTIBMAS\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator; 
+
+use KANTIBMAS\Models\Users;
+use DataTables;
+use Carbon\Carbon;
+use Auth;
 
 class AdmisController extends Controller
 {
@@ -11,9 +17,24 @@ class AdmisController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index(Request $request)
+    { 
+
+        if ($request->ajax()) {            
+        
+            $data = Users::where('role', '!=' , 'bibnopsal')->get(); 
+
+            return DataTables::of($data) 
+                    ->addColumn('action', function ($data) {
+                        $button = '<a class="btn btn-success btn-sm"  href="' . route('admin.edit', $data->id) .'"><i class="fa fa-edit"></i></a>'; 
+                        $button .= '<a class="btn btn-info btn-sm"  href="' . route('admin.show', $data->id) .'"><i class="fa fa-eye"></i></a>';  
+                        return $button;
+                      })  
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+      
+        return view('admins.index'); 
     }
 
     /**
@@ -23,7 +44,7 @@ class AdmisController extends Controller
      */
     public function create()
     {
-        //
+        return view('admins.create'); 
     }
 
     /**
@@ -45,7 +66,15 @@ class AdmisController extends Controller
      */
     public function show($id)
     {
-        //
+        $show = Users::findOrFail($id);
+        $userPicAtasan = Users::getPicName($id); 
+
+        $allData = [
+            'data'      => $show, 
+            'atasan'      => $userPicAtasan, 
+        ]; 
+
+        return view('admins.show', $allData);
     }
 
     /**
