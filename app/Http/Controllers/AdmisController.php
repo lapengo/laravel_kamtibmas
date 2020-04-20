@@ -3,6 +3,7 @@
 namespace KANTIBMAS\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 use KANTIBMAS\Models\Users;
@@ -12,6 +13,20 @@ use Auth;
 
 class AdmisController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(function($request, $next){
+
+            if(Gate::allows('isAdmin')){
+                return $next($request);
+            }
+            abort(403, 'Anda tidak memiliki cukup hak akses');
+        });
+    }
+
     /**
      * Display a listing of the resource.
      *

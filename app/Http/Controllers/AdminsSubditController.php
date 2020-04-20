@@ -4,6 +4,7 @@ namespace KANTIBMAS\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Gate;
 use KANTIBMAS\Models\Users;
 use DataTables;
 use Carbon\Carbon;
@@ -11,6 +12,19 @@ use Auth;
 
 class AdminsSubditController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(function($request, $next){
+
+            if(Gate::allows('isAdmin')){
+                return $next($request);
+            }
+            abort(403, 'Anda tidak memiliki cukup hak akses');
+        });
+    }
     /**
      * Display a listing of the resource.
      *

@@ -5,41 +5,58 @@ namespace KANTIBMAS\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Gate;
-use KANTIBMAS\Models\Users; 
-use KANTIBMAS\Models\Laporan; 
+use KANTIBMAS\Models\Users;
+use KANTIBMAS\Models\Laporan;
 use Carbon\Carbon;
 use Auth;
 use DB;
 
 class ChartController extends Controller
-{ 
+{
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(function($request, $next){
+
+            if(Gate::allows('isBibnopsal')){
+                return $next($request);
+            }
+
+            if(Gate::allows('isSubdit')){
+                return $next($request);
+            }
+            abort(403, 'Anda tidak memiliki cukup hak akses');
+        });
+    }
+
     public function getDataByUnit(Request $request)
-    {  
+    {
         $now = Carbon::now()->format('Y-m-d');
 
         $status     = 2;
         $unit       = $request->get('unit');
         $date       = $request->get('tanggal_situasi');
-        
-        
-        $pilihUnit = "";         
+
+
+        $pilihUnit = "";
 
         if($unit == 0){
             $unit   = Auth::user()->id;
             $status = 1;
             $pilihUnit = "Semua Unit";
         }else{
-            $qryUser    = Users::findOrFail($unit);  
-            $pilihUnit  = $qryUser->pic_name; 
+            $qryUser    = Users::findOrFail($unit);
+            $pilihUnit  = $qryUser->pic_name;
         }
 
         if($date == '')
         {
             $date = $now;
-        }  
+        }
 
         $models = new Laporan;
-        $description    = $models->getDescLoporan($unit, $date, $status); 
+        $description    = $models->getDescLoporan($unit, $date, $status);
         $jmlData        = $models->getJmlDataSubditUnit($unit, $date, $status);
 
 
@@ -51,39 +68,39 @@ class ChartController extends Controller
                         'date'      => $date,
                         'unitPilih' => $pilihUnit,
                         'desc'      => $description,
-                    ]; 
-        
-        return view('chart.subditchart', $allData); 
-        
+                    ];
+
+        return view('chart.subditchart', $allData);
+
     }
 
     public function getDataBySubdit(Request $request)
-    {  
+    {
         $now = Carbon::now()->format('Y-m-d');
 
         $status     = 1;
         $unit       = $request->get('unit');
         $date       = $request->get('tanggal_situasi');
-        
-        
-        $pilihUnit = "";         
+
+
+        $pilihUnit = "";
 
         if($unit == 0){
             $unit   = Auth::user()->id;
             $status = 3;
             $pilihUnit = "Semua Subdit";
         }else{
-            $qryUser    = Users::findOrFail($unit);  
-            $pilihUnit  = $qryUser->pic_name; 
+            $qryUser    = Users::findOrFail($unit);
+            $pilihUnit  = $qryUser->pic_name;
         }
 
         if($date == '')
         {
             $date = $now;
-        }  
+        }
 
         $models = new Laporan;
-        $description    = $models->getDescLoporan($unit, $date, $status); 
+        $description    = $models->getDescLoporan($unit, $date, $status);
         $jmlData        = $models->getJmlDataSubditUnit($unit, $date, $status);
 
 
@@ -95,9 +112,9 @@ class ChartController extends Controller
                         'date'      => $date,
                         'unitPilih' => $pilihUnit,
                         'desc'      => $description,
-                    ]; 
-        
-        return view('chart.subditchart', $allData); 
-        
+                    ];
+
+        return view('chart.subditchart', $allData);
+
     }
 }
