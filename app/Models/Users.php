@@ -3,12 +3,12 @@
 namespace KANTIBMAS\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator; 
+use Illuminate\Support\Facades\Validator;
 use DB;
 
 class Users extends Model
-{   
-    protected $table        = 'users'; 
+{
+    protected $table        = 'users';
     public $timestamps      = true;
     protected $primaryKey   = 'id';
     protected $fillable     =   [
@@ -25,7 +25,7 @@ class Users extends Model
         $attributes = [
                         'name'          => 'Nama Lengkap',
                         'email'         => 'Email Aktif',
-                        'password'      => 'Password', 
+                        'password'      => 'Password',
                         'pic_name'      => 'Nama PIC',
                         'picto'         => 'PIC Tujuan',
                     ];
@@ -33,14 +33,14 @@ class Users extends Model
         return $attributes;
     }
 
-    
+
     public function attr2()
     {
         $attributes = [
                         'name'          => 'Nama Lengkap',
                         'email'         => 'Email Aktif',
-                        'password'      => 'Password', 
-                        'pic_name'      => 'Nama PIC', 
+                        'password'      => 'Password',
+                        'pic_name'      => 'Nama PIC',
                     ];
 
         return $attributes;
@@ -60,14 +60,13 @@ class Users extends Model
                                             // 'regex:/[A-Z]/',      // must contain at least one uppercase letter
                                             // 'regex:/[0-9]/',      // must contain at least one digit
                                             // 'regex:/[@$!%*#?&]/', // must contain a special character
-                                        ],  
+                                        ],
                     'pic_name'      => 'required|string|max:191',
-                    'picto'         => 'required|numeric|regex:/^[0-9]+$/',
                 ];
         return $rule;
     }
 
-    
+
     public function rule2()
     {
         $rule = [
@@ -81,23 +80,23 @@ class Users extends Model
                                             // 'regex:/[A-Z]/',      // must contain at least one uppercase letter
                                             // 'regex:/[0-9]/',      // must contain at least one digit
                                             // 'regex:/[@$!%*#?&]/', // must contain a special character
-                                        ],  
-                    'pic_name'      => 'required|string|max:191', 
+                                        ],
+                    'pic_name'      => 'required|string|max:191',
                 ];
         return $rule;
     }
 
     public function getValidation1($request)
-    { 
+    {
         $validator = Validator::make($request, $this->rule1(), [], $this->attr())->validate();
-        
+
         return $validator;
     }
 
     public function getValidation2($request)
-    { 
+    {
         $validator = Validator::make($request, $this->rule2(), [], $this->attr())->validate();
-        
+
         return $validator;
     }
 
@@ -105,23 +104,23 @@ class Users extends Model
     public function scopeGetUnitSubdit($query, $idSubdit)
     {
         return $query->where('picto', $idSubdit);
-    }  
+    }
 
-    
+
     public function scopeGetPicName($query, $id)
-    { 
+    {
 
         $data = DB::table($this->table)
                 ->select('picto', 'id')
                 ->where('id', $id)
                 ->first();
 
-                
+
         $picname = DB::table($this->table)
                     ->select('*')
                     ->where('id', $data->picto)
                     ->first();
 
         return $picname;
-    } 
+    }
 }

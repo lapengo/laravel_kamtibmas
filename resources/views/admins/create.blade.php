@@ -3,7 +3,7 @@
 @section('title_page', 'Admin - Create')
 
 @section('content')
- 
+
 <form
     action="{{route('admin.store')}}"
     enctype="multipart/form-data"
@@ -15,105 +15,105 @@
     <div class="col-md-12 col-sm-12  ">
         <div class="x_panel">
             <div class="x_title">
-                    <h2>Form Tambah Data</h2>
+                    <h2>Form Tambah Data - Unit</h2>
                 <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div class="x_content">            
-                
+            <div class="x_content">
+
                 <div id="toggleable" class="item form-group">
                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="picto">Pilih Subdit Atasan
                     </label>
                     <div class="col-md-6 col-sm-6 ">
                         <select id="picto" name="picto" class="form-control">
-                            @foreach ($data as $row)  
-                            <option value="{{$row->pic_name}}">{{$row->pic_name}}</option> 
+                            @foreach ($data as $row)
+                            <option value="{{$row->id}}">{{$row->pic_name}}</option>
                             @endforeach
                           </select>
                     </div>
-                    @if($errors->has('picto'))     
+                    @if($errors->has('picto'))
                         <ul class="parsley-errors-list filled" id="parsley-id-38">
                             <li class="parsley-required">{{ $errors->first('picto') }}</li>
-                        </ul> 
+                        </ul>
                     @endif
                 </div>
 
                 <div class="item form-group">
                     <label class="col-form-label col-md-3 col-sm-3 label-align" id="lblpicname" for="pic_name">Nama Bagian</label>
                     <div class="col-md-6 col-sm-6 ">
-                        
+
                         <input id="picname" name="pic_name" value="{{ old('pic_name') }}"  type="text" class="form-control{{($errors->first('pic_name') ? " parsley-error" : "")}}">
-                        
-                        @if($errors->has('pic_name')) 
+
+                        @if($errors->has('pic_name'))
 
                             <ul class="parsley-errors-list filled" id="parsley-id-38">
                                 <li class="parsley-required">{{ $errors->first('pic_name') }}</li>
-                            </ul> 
+                            </ul>
 
                         @endif
                     </div>
-                </div> 
+                </div>
 
-                
+
                 <div class="item form-group">
                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Nama Pengguna</label>
                     <div class="col-md-6 col-sm-6 ">
-                        
+
                         <input id="name" name="name" value="{{ old('name') }}"  type="text" class="form-control{{($errors->first('name') ? " parsley-error" : "")}}">
-                        
-                        @if($errors->has('name')) 
+
+                        @if($errors->has('name'))
 
                             <ul class="parsley-errors-list filled" id="parsley-id-38">
                                 <li class="parsley-required">{{ $errors->first('name') }}</li>
-                            </ul> 
+                            </ul>
 
                         @endif
                     </div>
-                </div> 
+                </div>
 
-                
+
                 <div class="item form-group">
                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Email Pengguna</label>
                     <div class="col-md-6 col-sm-6 ">
-                        
+
                         <input id="email" name="email" value="{{ old('email') }}"  type="text" class="form-control{{($errors->first('email') ? " parsley-error" : "")}}">
-                        
-                        @if($errors->has('email')) 
+
+                        @if($errors->has('email'))
 
                             <ul class="parsley-errors-list filled" id="parsley-id-38">
                                 <li class="parsley-required">{{ $errors->first('email') }}</li>
-                            </ul> 
+                            </ul>
 
                         @endif
                     </div>
-                </div> 
+                </div>
 
-                
+
                 <div class="item form-group">
                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="password">Password</label>
                     <div class="col-md-6 col-sm-6 ">
-                        
+
                         <input id="password" name="password" value="{{ old('password') }}"  type="password" class="form-control{{($errors->first('password') ? " parsley-error" : "")}}">
-                        
-                        @if($errors->has('password')) 
+
+                        @if($errors->has('password'))
 
                             <ul class="parsley-errors-list filled" id="parsley-id-38">
                                 <li class="parsley-required">{{ $errors->first('password') }}</li>
-                            </ul> 
+                            </ul>
 
                         @endif
                     </div>
-                </div> 
-                   
+                </div>
+
             </div>
         </div>
     </div>
 
-     
 
-</div> 
+
+</div>
 
 <hr>
 
@@ -129,12 +129,12 @@
 @push('scripts')
 
 <script>
-$(function() {        
+$(function() {
 
     $('#myDatepicker2').datetimepicker({
         format: 'YYYY-MM-DD'
     });
-     
+
 
 });
 </script>

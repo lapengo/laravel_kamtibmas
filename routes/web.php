@@ -20,34 +20,31 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
 
-    // Route::group(['prefix'=>'laporans','as'=>'laporan.'], function(){    
+    // Route::group(['prefix'=>'laporans','as'=>'laporan.'], function(){
     //     Route::get('/printpdfunit/{id}', ['as' => 'printpdfunit', 'uses' => 'PrintsController@printPDFUnit']);
     //     Route::get('/printpdfsubdit/{id}', ['as' => 'printpdfunit', 'uses' => 'PrintsController@printpdfsubdit']);
     //     Route::get('/printpdfbibnopsal/{id}', ['as' => 'printpdfunit', 'uses' => 'PrintsController@printpdfbibnopsal']);
-        
+
     //     // Route::get('/printpdfunit/{id}', 'PrintsController@printPDFUnit')->name('laporan.printpdfunit');
     //     // Route::get('/printpdfsubdit/{id}', 'PrintsController@printPDFUnit')->name('laporan.printpdfsubdit');
     //     // Route::get('/printpdfbibnopsal/{id}', 'PrintsController@printPDFUnit')->name('laporan.printpdfbibnopsal');
     // });
-    
-    
-    Route::resource('admin', 'AdmisController');
-    Route::group(['prefix'=>'admin','as'=>'admin.'], function(){  
-        Route::get('create2', ['as' => 'create2', 'uses' => 'AdmisController@create2'] ); 
-        Route::get('store2', ['as' => 'store', 'uses' => 'AdmisController@store'] );    
-    }); 
-     
-    Route::resource('laporan', 'LaporanController');
-    Route::get('laporan/destroy/{id}', 'LaporanController@destroy');    
 
-    Route::group(['prefix'=>'laporanreport','as'=>'laporan.'], function(){  
-        Route::get('index', ['as' => 'subdit', 'uses' => 'LaporanSubditController@index'] );    
+
+    Route::resource('admin', 'AdmisController');
+    Route::resource('admins', 'AdminsSubditController');
+
+    Route::resource('laporan', 'LaporanController');
+    Route::get('laporan/destroy/{id}', 'LaporanController@destroy');
+
+    Route::group(['prefix'=>'laporanreport','as'=>'laporan.'], function(){
+        Route::get('index', ['as' => 'subdit', 'uses' => 'LaporanSubditController@index'] );
     });
 
-    
-    Route::group(['prefix'=>'charts','as'=>'chart.'], function(){  
-        Route::get('subdit', ['as' => 'subdit', 'uses' => 'ChartController@getDataBySubdit'] );  
-        Route::get('unit', ['as' => 'unit', 'uses' => 'ChartController@getDataByUnit'] );   
+
+    Route::group(['prefix'=>'charts','as'=>'chart.'], function(){
+        Route::get('subdit', ['as' => 'subdit', 'uses' => 'ChartController@getDataBySubdit'] );
+        Route::get('unit', ['as' => 'unit', 'uses' => 'ChartController@getDataByUnit'] );
     });
 
 });
@@ -55,5 +52,5 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-// Route::get('/home', 'HomeController@index')->name('home'); 
+// Route::get('/home', 'HomeController@index')->name('home');
 
