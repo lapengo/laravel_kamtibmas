@@ -69,18 +69,17 @@ class AdmisController extends Controller
         $model = new Users;
         $model->getValidation2($request->all());
 
-        $new_user = new Users;
+        $edit = new Users;
+
+        $edit->name              = $request->get('name');
+        $edit->email             = $request->get('email');
+        $edit->password          = \Hash::make($request->get('password'));
+        $edit->role              = 'unit';
+        $edit->pic_name          = $request->get('pic_name');
+        $edit->picto             = $request->get('picto');
 
 
-        $new_user->name              = $request->get('name');
-        $new_user->email             = $request->get('email');
-        $new_user->password          = $request->get('password');
-        $new_user->role              = 'unit';
-        $new_user->pic_name          = $request->get('pic_name');
-        $new_user->picto             = $request->get('picto');
-
-
-        $new_user->save();
+        $edit->save();
         return redirect()->route('admin.index')->with('status', 'User berhasil disimpan');
 
     }
@@ -112,7 +111,8 @@ class AdmisController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Users::findOrFail($id);
+        return view('admins.edit', ['data' => $data]);
     }
 
     /**
@@ -124,7 +124,19 @@ class AdmisController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $model = new Users;
+        $model->getValidation3($request->all(), $id);
+
+        $edit = Users::findOrFail($id);
+        $edit->name              = $request->get('name');
+        $edit->email             = $request->get('email');
+        $edit->password          = \Hash::make($request->get('password'));
+        $edit->pic_name          = $request->get('pic_name');
+        $edit->picto             = $request->get('picto');
+
+
+        $edit->save();
+        return redirect()->route('admin.index')->with('status', 'User berhasil disimpan');
     }
 
     /**

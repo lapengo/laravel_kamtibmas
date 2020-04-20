@@ -46,7 +46,7 @@ class AdminsSubditController extends Controller
 
         $new_user->name              = $request->get('name');
         $new_user->email             = $request->get('email');
-        $new_user->password          = $request->get('password');
+        $new_user->password          = \Hash::make($request->get('password'));
         $new_user->role              = 'subdit';
         $new_user->pic_name          = $request->get('pic_name');
         $new_user->picto             = 1;

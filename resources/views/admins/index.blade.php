@@ -18,7 +18,7 @@
 
         <div class="x_panel">
             <div class="x_title">
-                <h2>Data Bagian - BiBNOPSAL</h2>
+                <h2>Data Bagian - BIBNOPSAL</h2>
                 <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                 </ul>
@@ -40,8 +40,7 @@
                             <td>{{ $r["name"] }}</td>
                             <td>{{ $r["email"] }}</td>
                             <td>
-                                <a class="btn btn-success btn-sm"  href="' . route('admin.edit', $r['id']) .'"><i class="fa fa-edit"></i></a>
-                                <a class="btn btn-info btn-sm"  href="' . route('admin.show', $r['id']) .'"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-success btn-sm"  href="{{ route('admin.edit', $r['id']) }}"><i class="fa fa-edit"></i></a>
                             </td>
                         </tr>
                     @endforeach

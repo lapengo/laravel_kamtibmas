@@ -66,6 +66,25 @@ class Users extends Model
         return $rule;
     }
 
+    public function rule3($id)
+    {
+        $rule = [
+            'name'          => 'required|string|max:191',
+            'email'         => 'required|unique:users,email,'.$id,
+            'password'      => [
+                'required',
+                'string',
+                'min:8',             // must be at least 10 characters in length
+                // 'regex:/[a-z]/',      // must contain at least one lowercase letter
+                // 'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                // 'regex:/[0-9]/',      // must contain at least one digit
+                // 'regex:/[@$!%*#?&]/', // must contain a special character
+            ],
+            'pic_name'      => 'required|string|max:191',
+        ];
+        return $rule;
+    }
+
 
     public function rule2()
     {
@@ -96,6 +115,13 @@ class Users extends Model
     public function getValidation2($request)
     {
         $validator = Validator::make($request, $this->rule2(), [], $this->attr())->validate();
+
+        return $validator;
+    }
+
+    public function getValidation3($request, $id)
+    {
+        $validator = Validator::make($request, $this->rule3($id), [], $this->attr())->validate();
 
         return $validator;
     }
