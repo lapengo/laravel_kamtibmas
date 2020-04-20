@@ -7,16 +7,11 @@
 
 <div class="row">
     <div class="col-md-12 col-sm-12">
-        <a class="btn btn btn-primary btn-sm" href="{{route('laporan.index')}}"><i class="fa fa-arrow-circle-left"></i> Lihat Semua Data</a>
-            
         @can('isUnit')
-            <a class="btn btn-danger btn-sm" href="{{route('laporan.printpdfunit', $data->id)}}"><i class="fa fa-file-pdf-o"></i> Cetak PDF</a>
-        @elsecan('isSubdit')
-            <a class="btn btn-danger btn-sm" href="{{route('laporan.printpdfsubdit', $data->id)}}"><i class="fa fa-file-pdf-o"></i> Cetak PDF</a>
-        @elsecan('isBibnopsal')
-            <a class="btn btn-danger btn-sm" href="{{route('laporan.printpdfbibnopsal', $data->id)}}"><i class="fa fa-file-pdf-o"></i> Cetak PDF</a>
-        @else
-            {{-- <b> </b> --}}
+        <a class="btn btn btn-primary btn-sm" href="{{route('laporan.index')}}"><i class="fa fa-arrow-circle-left"></i> Lihat Semua Data</a>
+        @endcan
+        @can('isSubdit')
+        <a class="btn btn btn-primary btn-sm" href="{{route('laporan.subdit')}}"><i class="fa fa-arrow-circle-left"></i> Lihat Semua Data</a>
         @endcan
     
     </div>
@@ -49,14 +44,14 @@
             {{-- Row Data --}}
 
                 <div class="row" style="color:#000000;">
-                    <div class="col-md-12 col-sm-12">
+                    {{-- <div class="col-md-12 col-sm-12">
                         <div class="col-md-12 col-sm-12">Selamat Malam</div>
                         <div class="col-md-12 col-sm-12">Kepada Yth. User</div>  
                         <div class="col-md-12 col-sm-12">Dari User</div>  
 
                         <br>                       
 
-                    </div>
+                    </div> --}}
 
                     <div class="col-md-12 col-sm-12">
                         <p>

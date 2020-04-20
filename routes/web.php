@@ -5,17 +5,7 @@ Route::get('/', 'Auth\LoginController@showLoginForm');
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/home', 'HomeController@index')->name('home');
-
-    // Route::group(['prefix'=>'laporans','as'=>'laporan.'], function(){
-    //     Route::get('/printpdfunit/{id}', ['as' => 'printpdfunit', 'uses' => 'PrintsController@printPDFUnit']);
-    //     Route::get('/printpdfsubdit/{id}', ['as' => 'printpdfunit', 'uses' => 'PrintsController@printpdfsubdit']);
-    //     Route::get('/printpdfbibnopsal/{id}', ['as' => 'printpdfunit', 'uses' => 'PrintsController@printpdfbibnopsal']);
-
-    //     // Route::get('/printpdfunit/{id}', 'PrintsController@printPDFUnit')->name('laporan.printpdfunit');
-    //     // Route::get('/printpdfsubdit/{id}', 'PrintsController@printPDFUnit')->name('laporan.printpdfsubdit');
-    //     // Route::get('/printpdfbibnopsal/{id}', 'PrintsController@printPDFUnit')->name('laporan.printpdfbibnopsal');
-    // });
+    Route::get('/home', 'HomeController@index')->name('home'); 
 
 
     Route::resource('admin', 'AdmisController');

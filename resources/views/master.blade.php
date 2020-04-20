@@ -85,14 +85,6 @@
                   <li><a href="{{ url('home') }}"><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a></li>
 
 
-                    @can('isUnit')
-                        <li><a><i class="fa fa-send"></i> Laporan <span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
-                                <li><a href="{{route('laporan.index')}}">Data Laporan</a></li>
-                            </ul>
-                        </li>
-                    @endcan
-
                     @can('isAdmin')
                         <li><a href="{{ url('admin') }}"><i class="fa fa-users"></i> Administrator <span class="fa fa-chevron-down"></span></a></li>
                     @endcan
@@ -108,6 +100,14 @@
                         <li><a><i class="fa fa-bar-chart"></i> Data Laporan <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <li><a href="{{route('chart.unit')}}">Data Laporan Subdit</a></li>
+                            </ul>
+                        </li>
+                    @endcan
+
+                    @can('isUnit')
+                        <li><a><i class="fa fa-send"></i> Laporan <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li><a href="{{route('laporan.index')}}">Data Laporan</a></li>
                             </ul>
                         </li>
                     @endcan
