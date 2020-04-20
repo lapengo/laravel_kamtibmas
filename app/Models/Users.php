@@ -3,6 +3,7 @@
 namespace KANTIBMAS\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator; 
 use DB;
 
 class Users extends Model
@@ -24,8 +25,7 @@ class Users extends Model
         $attributes = [
                         'name'          => 'Nama Lengkap',
                         'email'         => 'Email Aktif',
-                        'password'      => 'Password',
-                        'role'          => 'Role',
+                        'password'      => 'Password', 
                         'pic_name'      => 'Nama PIC',
                         'picto'         => 'PIC Tujuan',
                     ];
@@ -33,32 +33,70 @@ class Users extends Model
         return $attributes;
     }
 
+    
+    public function attr2()
+    {
+        $attributes = [
+                        'name'          => 'Nama Lengkap',
+                        'email'         => 'Email Aktif',
+                        'password'      => 'Password', 
+                        'pic_name'      => 'Nama PIC', 
+                    ];
 
-    public function rule()
+        return $attributes;
+    }
+
+
+    public function rule1()
     {
         $rule = [
                     'name'          => 'required|string|max:191',
-                    'email'         => 'required|unique:users,email:rfc',
+                    'email'         => 'required|unique:users,email',
                     'password'      => [
                                             'required',
                                             'string',
-                                            'min:10',             // must be at least 10 characters in length
-                                            'regex:/[a-z]/',      // must contain at least one lowercase letter
-                                            'regex:/[A-Z]/',      // must contain at least one uppercase letter
-                                            'regex:/[0-9]/',      // must contain at least one digit
-                                            'regex:/[@$!%*#?&]/', // must contain a special character
-                                        ],
-                    'password2'     => 'required_with:password|same:password',
-                    'role'          => 'required|string|max:191',
+                                            'min:8',             // must be at least 10 characters in length
+                                            // 'regex:/[a-z]/',      // must contain at least one lowercase letter
+                                            // 'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                                            // 'regex:/[0-9]/',      // must contain at least one digit
+                                            // 'regex:/[@$!%*#?&]/', // must contain a special character
+                                        ],  
                     'pic_name'      => 'required|string|max:191',
                     'picto'         => 'required|numeric|regex:/^[0-9]+$/',
                 ];
         return $rule;
     }
 
-    public function getValidation($request)
+    
+    public function rule2()
+    {
+        $rule = [
+                    'name'          => 'required|string|max:191',
+                    'email'         => 'required|unique:users|email:rfc|max:50l',
+                    'password'      => [
+                                            'required',
+                                            'string',
+                                            'min:8',             // must be at least 10 characters in length
+                                            // 'regex:/[a-z]/',      // must contain at least one lowercase letter
+                                            // 'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                                            // 'regex:/[0-9]/',      // must contain at least one digit
+                                            // 'regex:/[@$!%*#?&]/', // must contain a special character
+                                        ],  
+                    'pic_name'      => 'required|string|max:191', 
+                ];
+        return $rule;
+    }
+
+    public function getValidation1($request)
     { 
-        $validator = Validator::make($request, $this->rule(), [], $this->attr())->validate();
+        $validator = Validator::make($request, $this->rule1(), [], $this->attr())->validate();
+        
+        return $validator;
+    }
+
+    public function getValidation2($request)
+    { 
+        $validator = Validator::make($request, $this->rule2(), [], $this->attr())->validate();
         
         return $validator;
     }

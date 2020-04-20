@@ -32,6 +32,10 @@ Route::group(['middleware' => 'auth'], function () {
     
     
     Route::resource('admin', 'AdmisController');
+    Route::group(['prefix'=>'admin','as'=>'admin.'], function(){  
+        Route::get('create2', ['as' => 'create2', 'uses' => 'AdmisController@create2'] ); 
+        Route::get('store2', ['as' => 'store', 'uses' => 'AdmisController@store'] );    
+    }); 
      
     Route::resource('laporan', 'LaporanController');
     Route::get('laporan/destroy/{id}', 'LaporanController@destroy');    

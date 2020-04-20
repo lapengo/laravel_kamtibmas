@@ -44,8 +44,16 @@ class AdmisController extends Controller
      */
     public function create()
     {
-        return view('admins.create'); 
+        $data = Users::where('role', 'subdit')->get();
+        
+        return view('admins.create', ['data' => $data]); 
     }
+
+    public function create2()
+    {        
+        return view('admins.create2'); 
+    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -55,7 +63,25 @@ class AdmisController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
+        $model = new Users;
+        $model->getValidation2($request->all());  
+        
+        $new_user = new Users; 
+
+        
+        $new_user->name              = $request->get('name');
+        $new_user->email             = $request->get('email');
+        $new_user->password          = $request->get('password');
+        $new_user->role              = 'unit';
+        $new_user->pic_name          = $request->get('pic_name');
+        $new_user->picto             = $request->get('picto'); 
+        
+
+        $new_user->save(); 
+        return redirect()->route('admin.index')->with('status', 'User berhasil disimpan'); 
+        
     }
 
     /**
