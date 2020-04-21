@@ -115,7 +115,7 @@
                     @can('isBibnopsal')
                         <li><a><i class="fa fa-bar-chart"></i> Data Laporan <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                <li><a href="{{route('chart.unit')}}">Data Laporan Subdit</a></li>
+                                <li><a href="{{route('chart.subdit')}}">Data Laporan Subdit</a></li>
                             </ul>
                         </li>
                     @endcan
@@ -165,6 +165,9 @@
 
                             {{-- <a class="dropdown-item"  href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a> --}}
 
+                                
+                            <a href="http://" class="dropdown-item"> <i class="fa fa-exchange"></i> Ganti Password</a>
+
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
@@ -176,7 +179,7 @@
                                 </form>
 
                             </div>
-                        </li>
+                        </li> 
 
                     @endguest
 

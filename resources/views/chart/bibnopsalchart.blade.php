@@ -9,7 +9,7 @@
     
     <div class="col-md-12 col-sm-12  ">
         <form
-            action="{{route('chart.unit')}}"
+            action="{{route('chart.subdit')}}"
             enctype="multipart/form-data"
             method="GET" 
         >@csrf
@@ -181,11 +181,19 @@ $(function() {
         ]
         },
         options: {
-        legend: { display: false },
-        title: {
-            display: true,
-            text: 'Data Laporan'
-        }
+            legend: { display: false },
+            title: {
+                display: true,
+                text: 'Data Laporan'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        suggestedMin: 0,
+                        min: 0,
+                    }
+                }]
+            },
         }
     });
 

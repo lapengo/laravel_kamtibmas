@@ -114,7 +114,7 @@ class ChartController extends Controller
                         'desc'      => $description,
                     ];
 
-        return view('chart.subditchart', $allData);
+        return view('chart.bibnopsalchart', $allData);
 
     }
 }
