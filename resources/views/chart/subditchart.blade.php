@@ -181,11 +181,19 @@ $(function() {
         ]
         },
         options: {
-        legend: { display: false },
-        title: {
-            display: true,
-            text: 'Data Laporan'
-        }
+            legend: { display: false },
+            title: {
+                display: true,
+                text: 'Data Laporan'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        suggestedMin: 0,
+                        min: 0,
+                    }
+                }]
+            },
         }
     });
 
