@@ -24,5 +24,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('unit', ['as' => 'unit', 'uses' => 'ChartController@getDataByUnit'] );
     });
 
+    
+    Route::get('/changepassword', 'ChangePasswordController@index'); 
+    Route::post('/changepassword', 'ChangePasswordController@store')->name('change.password'); 
+
 });
 

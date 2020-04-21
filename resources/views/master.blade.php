@@ -166,7 +166,7 @@
                             {{-- <a class="dropdown-item"  href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a> --}}
 
                                 
-                            <a href="http://" class="dropdown-item"> <i class="fa fa-exchange"></i> Ganti Password</a>
+                            <a href="{{ url('changepassword') }}" class="dropdown-item"> <i class="fa fa-exchange"></i> Ganti Password</a>
 
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
