@@ -146,8 +146,7 @@ class AdmisController extends Controller
         $edit->name              = $request->get('name');
         $edit->email             = $request->get('email');
         $edit->password          = \Hash::make($request->get('password'));
-        $edit->pic_name          = $request->get('pic_name');
-        $edit->picto             = $request->get('picto');
+        $edit->pic_name          = $request->get('pic_name'); 
 
 
         $edit->save();
